@@ -58,6 +58,7 @@ const Payment = () => {
       const { data } = await axios.post(
         "/payment/process",
         paymentData,
+        {withCredentials:true},
         config
       );
 
