@@ -89,7 +89,8 @@ export const createProduct = (productData) => async (dispatch) => {
     const config = {
       headers: { 
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        withCredentials: true,
       },
     };
     const { data } = await axios.post(
