@@ -33,6 +33,8 @@ import {
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+
+
 // Get All Products
 export const getProduct =
   (keyword = "", currentPage = 1, price = [0, 25000], category, ratings = 0) =>
@@ -66,7 +68,7 @@ export const getAdminProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_PRODUCT_REQUEST });
 
-    const { data } = await axios.get(`/admin/selfproducts/:${id}`);
+    const { data } = await axios.get(`/admin/selfproducts/:${id}`, {"Authorization": `Bearer ${localStorage.getItem("token")}`});
 
     dispatch({
       type: ADMIN_PRODUCT_SUCCESS,
@@ -86,7 +88,7 @@ export const createProduct = (productData) => async (dispatch) => {
     dispatch({ type: NEW_PRODUCT_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "multipart/form-data" , withCredentials: true, },
+      headers: { "Content-Type": "multipart/form-data" , withCredentials: true,"Authorization": `Bearer ${localStorage.getItem("token")}`},
     };
     const { data } = await axios.post(
       `/admin/product/new`,
