@@ -23,32 +23,30 @@ import {
 import axios from "../api/axios";
 import { toast } from "react-toastify";
 
-const config = {
-  headers: {
-    "Content-Type": "application/json"
-  },
-};
 
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    config.headers.withCredentials = true; // Include cookies if used
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     config.headers.withCredentials = true; // Include cookies if used
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 // Create Order
 export const createOrder = (order) => async (dispatch) => {
   try {
     dispatch({ type: CREATE_ORDER_REQUEST });
-
-    
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      },
+    };
     const { data } = await axios.post("/order/new", order, config);
 
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
@@ -67,7 +65,7 @@ export const myOrders = () => async (dispatch) => {
   try {
     dispatch({ type: MY_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/orders/me", config);
+    const { data } = await axios.get("/orders/me");
 
     dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
@@ -83,7 +81,7 @@ export const getAllOrders = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/admin/orders",  config);
+    const { data } = await axios.get("/admin/orders");
 
     dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
