@@ -34,6 +34,20 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers.withCredentials = true; // Include cookies if used
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 
 // Get All Products
 export const getProduct =
@@ -68,7 +82,7 @@ export const getAdminProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_PRODUCT_REQUEST });
 
-    const { data } = await axios.get(`/admin/selfproducts/:${id}`, {"Authorization": `Bearer ${localStorage.getItem("token")}`});
+    const { data } = await axios.get(`/admin/selfproducts/${id}`);
 
     dispatch({
       type: ADMIN_PRODUCT_SUCCESS,
@@ -88,7 +102,7 @@ export const createProduct = (productData) => async (dispatch) => {
     dispatch({ type: NEW_PRODUCT_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "multipart/form-data" , withCredentials: true,"Authorization": `Bearer ${localStorage.getItem("token")}`},
+      headers: { "Content-Type": "multipart/form-data"},
     };
     const { data } = await axios.post(
       `/admin/product/new`,

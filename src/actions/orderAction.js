@@ -25,10 +25,23 @@ import { toast } from "react-toastify";
 
 const config = {
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
+    "Content-Type": "application/json"
   },
 };
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers.withCredentials = true; // Include cookies if used
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Create Order
 export const createOrder = (order) => async (dispatch) => {
@@ -54,7 +67,7 @@ export const myOrders = () => async (dispatch) => {
   try {
     dispatch({ type: MY_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/orders/me", {withCredentials:true}, config);
+    const { data } = await axios.get("/orders/me", config);
 
     dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
@@ -70,7 +83,7 @@ export const getAllOrders = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/admin/orders", {withCredentials:true}, config);
+    const { data } = await axios.get("/admin/orders",  config);
 
     dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
