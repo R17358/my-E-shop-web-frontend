@@ -64,14 +64,14 @@ export const createOrder = (order) => async (dispatch) => {
 export const myOrders = () => async (dispatch) => {
   try {
     dispatch({ type: MY_ORDERS_REQUEST });
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        'Content-Type': 'application/json',
-        withCredentials: true,
-      },
-    };
-    const { data } = await axios.get("/orders/me", config);
+   /// const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //     'Content-Type': 'application/json',
+    //     withCredentials: true,
+    //   },
+    // };
+    const { data } = await axios.get("/orders/me");
 
     dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
