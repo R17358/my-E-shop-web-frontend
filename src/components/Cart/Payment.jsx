@@ -50,11 +50,14 @@ const Payment = () => {
     payBtn.current.disabled = true;
 
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
+     
+        const config = {
+          headers: {
+            "Content-Type": " application/json ",
+             Authorization: `Bearer ${localStorage.getItem("token")}`
+          },
+        };
+    
       const { data } = await axios.post(
         "/payment/process",
         paymentData,
