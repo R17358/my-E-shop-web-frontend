@@ -33,7 +33,6 @@ import OrderList from './components/Admin/OrderList'
 
 const stripePromise = loadStripe("pk_test_51OwJJmSHX593TEEJrYWld45sj3BcosNHNIL34PloU37MsGRNowQKqriEIukMTFjfSNZwkyo41i0S71xR5YVEJdoo00viuK9qkO"); // Replace with your Stripe public key
 
-//4000003560000008
 
 function App() {
   
